@@ -1,0 +1,85 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+
+android {
+    compileSdkVersion appInfo.compile_sdk_version
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId appInfo.application_id
+        minSdkVersion appInfo.min_sdk_version
+        targetSdkVersion appInfo.target_sdk_version
+        versionCode appInfo.version_code
+        versionName appInfo.version_name
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    dynamicFeatures = []
+}
+
+dependencies {
+    implementation              fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation              "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    // Support Libraries
+    implementation              "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation              "androidx.constraintlayout:constraintlayout:${versions.constraint_layout}"
+
+    // ARCHITECTURE COMPONENTS
+    // LiveData
+    implementation              "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
+    // Navigation
+    implementation              "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+    implementation              "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+    // Room
+    implementation              "androidx.room:room-runtime:${versions.room}"
+    implementation              "androidx.room:room-ktx:${versions.room}"
+    kapt                        "androidx.room:room-compiler:${versions.room}"
+    // ViewModel
+    implementation              "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+
+    //Coroutines
+    implementation              "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
+    implementation              "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+
+    // Dagger
+    implementation              "com.google.dagger:dagger:${versions.dagger}"
+    kapt                        "com.google.dagger:dagger-compiler:${versions.dagger}"
+
+    // Retrofit & OkHttp
+    implementation              "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation              "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+    implementation              "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation              "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
+
+    // Gson
+    implementation              "com.google.code.gson:gson:${versions.gson}"
+
+    // Glide
+    implementation              "com.github.bumptech.glide:glide:${versions.glide}"
+    kapt                        "com.github.bumptech.glide:compiler:${versions.glide}"
+
+    // Stetho
+    implementation              "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"
+
+    // TESTING
+    testImplementation          "junit:junit:${versions.junit}"
+    testImplementation          "android.arch.core:core-testing:${versions.test_core}"
+    androidTestImplementation   "androidx.test:runner:${versions.test_runner}"
+    androidTestImplementation   "androidx.test.espresso:espresso-core:${versions.test_espresso}"
+}
