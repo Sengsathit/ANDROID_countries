@@ -30,6 +30,8 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
 
     private lateinit var viewModel: CountriesViewModel
 
+    private lateinit var toolBar: Toolbar
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -61,19 +63,20 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
         countriesAdapter.setCountrySelectionListener(this)
         countriesRecyclerView.adapter = countriesAdapter
 
+        // Sets toolbar
+        toolBar = activity!!.toolbar
     }
 
     override fun onResume() {
         super.onResume()
-        // Sets toolbar
-        activity?.toolbar?.title ="Countries"
+        toolBar.title ="Countries"
     }
 
     //region Toolbar Menu
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        activity?.toolbar?.inflateMenu(R.menu.menu_countries)
-        activity?.toolbar?.setOnMenuItemClickListener(this)
+        toolBar.inflateMenu(R.menu.menu_countries)
+        toolBar.setOnMenuItemClickListener(this)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -89,7 +92,7 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
     //endregion
 
     /**
-     * Observes the ViewModel values
+     * Observes LiveData values from the ViewModel
      */
     private fun observeViewModel(lifeCycleOwner: LifecycleOwner) {
 
