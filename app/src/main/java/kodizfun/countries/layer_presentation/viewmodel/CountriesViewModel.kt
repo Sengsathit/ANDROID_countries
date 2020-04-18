@@ -3,12 +3,10 @@ package kodizfun.countries.layer_presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kodizfun.countries.layer_domain.entity.Country
 import kodizfun.countries.layer_domain.usecase.GetCountriesUseCase
 import kodizfun.countries.layer_presentation.di.ActivityScope
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @ActivityScope
@@ -41,16 +39,27 @@ class CountriesViewModel @Inject constructor(private var getCountriesUseCaseUseC
         _error.value = throwable.message
     }
 
+    // Coroutines scope and job
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    lateinit var countriesJob: Job
+
     fun getCountries() {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            _loading.value = true
-            _countries.value = getCountriesUseCaseUseCase()
-            _loading.value = false
+        countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
+            withContext(Dispatchers.Main) {
+                _loading.value = true
+                _countries.value = getCountriesUseCaseUseCase()
+                _loading.value = false
+            }
         }
     }
 
     fun setSelectedCountry(country: Country) {
         _selectedCountry = country
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        countriesJob.cancel()
     }
 
     companion object {

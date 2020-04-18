@@ -19,18 +19,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countriesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/countriesButton"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/countriesButton"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Reload countries"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
