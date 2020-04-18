@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import kodizfun.countries.layer_presentation.viewmodel.MainViewModel
+import kodizfun.countries.layer_presentation.viewmodel.CountriesViewModel
 
 /**
  * Module that binds :
@@ -20,6 +20,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    internal abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
+    @ViewModelKey(CountriesViewModel::class)
+    internal abstract fun bindCountriesViewModel(countriesViewModel: CountriesViewModel): ViewModel
 }

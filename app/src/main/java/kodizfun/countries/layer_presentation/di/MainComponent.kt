@@ -2,7 +2,8 @@ package kodizfun.countries.layer_presentation.di
 
 import dagger.Subcomponent
 import kodizfun.countries.layer_presentation.view.MainActivity
-import kodizfun.countries.layer_presentation.view.MainFragment
+import kodizfun.countries.layer_presentation.view.CountriesFragment
+import kodizfun.countries.layer_presentation.view.CountryDetailsFragment
 
 @ActivityScope
 @Subcomponent(modules = [ViewModelModule::class])
@@ -15,6 +16,7 @@ interface MainComponent {
     }
 
     // Classes that can be injected by this Component
-    fun inject(mainFragment: MainFragment)
+    fun inject(countriesFragment: CountriesFragment)
+    fun inject(countryDetailsFragment: CountryDetailsFragment)
     fun inject(mainActivity: MainActivity)
 }

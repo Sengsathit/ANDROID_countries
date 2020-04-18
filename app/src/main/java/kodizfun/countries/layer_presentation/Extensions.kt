@@ -1,4 +1,4 @@
-package kodizfun.countries.layer_presentation.view.util
+package kodizfun.countries.layer_presentation
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

@@ -9,16 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kodizfun.countries.R
 import kodizfun.countries.layer_presentation.di.ViewModelFactory
-import kodizfun.countries.layer_presentation.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
+import kodizfun.countries.layer_presentation.viewmodel.CountriesViewModel
+import kotlinx.android.synthetic.main.fragment_country_details.*
 import javax.inject.Inject
 
-class MainFragment : Fragment() {
+/**
+ * Fragment that displays a country details
+ */
+class CountryDetailsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: CountriesViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,21 +35,18 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this, this.viewModelFactory).get(MainViewModel::class.java)
+
+        // Initiates the ViewModel
+        viewModel = ViewModelProvider(this, this.viewModelFactory).get(CountriesViewModel::class.java)
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_country_details, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        countriesButton.setOnClickListener {
-            viewModel.getCountries()
-        }
+        countryNameTextView.text = viewModel.selectedCountry?.name
     }
 
-    companion object {
-        private val TAG = MainFragment::class.java.simpleName
-    }
 }

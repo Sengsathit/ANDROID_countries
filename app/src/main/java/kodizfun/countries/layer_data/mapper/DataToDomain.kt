@@ -8,4 +8,4 @@ import kodizfun.countries.layer_domain.entity.Country
  * RemoteDataCountry to Country
  */
 fun RemoteDataCountry.mapToDomain(): Country = Country(name, flagPNG)
-fun List<RemoteDataCountry>.mapToDomain(): List<Country> = map { it.mapToDomain() }
+fun List<RemoteDataCountry>.mapToDomain(): ArrayList<Country> = ArrayList(map { it.mapToDomain() })

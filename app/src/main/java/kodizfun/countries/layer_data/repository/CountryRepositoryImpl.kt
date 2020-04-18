@@ -14,7 +14,7 @@ class CountryRepositoryImpl @Inject constructor(
     private val remoteDataSource: CountryRemoteDataSource
 ) : CountryRepository {
 
-    override suspend fun getAllCountries(): List<Country> =
+    override suspend fun getAllCountries(): ArrayList<Country> =
         remoteDataSource.getAllCountries().mapToDomain()
 
 }
