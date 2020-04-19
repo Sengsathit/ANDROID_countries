@@ -1,17 +1,25 @@
 package kodizfun.countries.layer_presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kodizfun.countries.layer_domain.entity.Country
-import kodizfun.countries.layer_domain.usecase.GetCountriesUseCase
+import kodizfun.countries.layer_domain.usecase.*
 import kodizfun.countries.layer_presentation.di.ActivityScope
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @ActivityScope
-class CountriesViewModel @Inject constructor(private var getCountriesUseCaseUseCase: GetCountriesUseCase) :
-    ViewModel() {
+class CountriesViewModel @Inject constructor(
+    private val getCountriesUseCase: GetCountriesUseCase,
+    private val getCountryFromFavoritesUseCase: GetCountryFromFavoritesUseCase,
+    private val addCountryToFavoritesUseCase: AddCountryToFavoritesUseCase,
+    private val removeCountryFromFavoritesUseCase: RemoveCountryFromFavoritesUseCase,
+    private val isCountryFavoriteUseCase: IsCountryFavoriteUseCase
+) : ViewModel() {
+
+    //region PROPERTIES REGION
 
     // Encapsulated LiveData for countries
     private val _countries = MutableLiveData<ArrayList<Country>>()
@@ -41,27 +49,65 @@ class CountriesViewModel @Inject constructor(private var getCountriesUseCaseUseC
 
     // Coroutines scope and job
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    lateinit var countriesJob: Job
+    private lateinit var countriesJob: Job
+
+    //endregion
 
     fun getCountries() {
         countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
             withContext(Dispatchers.Main) {
                 _loading.value = true
-                _countries.value = getCountriesUseCaseUseCase()
+                _countries.value = getCountriesUseCase()
                 _loading.value = false
             }
         }
     }
 
+    /**
+     * Sets or removes the country from favorites
+     *
+     * - if country is in favorites, removes it from DB
+     * - if not adds it to DB
+     */
     fun toggleCountryFavorite() {
         _selectedCountry.value?.let { country ->
-            country.isFavorite = !country.isFavorite
-            _selectedCountry.postValue(country)
+
+            country.code?.let { countryCode ->
+                countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
+                    // Check if country is in favorites
+                    val isFavorite = isCountryFavoriteUseCase(countryCode)
+                    if(isFavorite) {
+                        // Remove country from favorites
+                        removeCountryFromFavoritesUseCase(countryCode)
+                        country.isFavorite = false
+                    } else {
+                        // Add country to favorites
+                        addCountryToFavoritesUseCase(country)
+                        country.isFavorite = true
+                    }
+                    _selectedCountry.postValue(country)
+                }
+            }
         }
     }
 
+    /**
+     * Sets the selected country
+     *
+     * - if country is in favorites, use the object get from DB
+     * - if not use the object from de countries list
+     */
     fun setSelectedCountry(country: Country) {
-        _selectedCountry.value = country
+        country?.code?.let {countryCode ->
+            countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
+                val selectedCountryFromUseCase = getCountryFromFavoritesUseCase(countryCode)
+                withContext(Dispatchers.Main) {
+                    _selectedCountry.value = selectedCountryFromUseCase?.let {
+                        it
+                    }  ?: country
+                }
+            }
+        }
     }
 
     override fun onCleared() {

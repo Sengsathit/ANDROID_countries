@@ -12,6 +12,7 @@ import kodizfun.countries.layer_data.datasource.local.model.LocalDataCountry
     version = 1
 )
 abstract class CountryDatabase : RoomDatabase() {
+
     abstract fun countryDao(): CountryDao
 
     companion object {

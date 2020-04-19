@@ -28,7 +28,7 @@ buildscript {
     ]
 
     ext.appInfo = [
-            'application_id'     : 'fr.sokdi.android_cleanarchitecture_mvvm',
+            'application_id'     : 'kodizfun.countries',
             'compile_sdk_version': 28,
             'min_sdk_version'    : 21,
             'target_sdk_version' : 28,

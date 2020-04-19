@@ -1,9 +1,28 @@
 package kodizfun.countries.layer_data.datasource.local.database.dao
 
-import androidx.room.Dao
+import androidx.room.*
+import kodizfun.countries.layer_data.datasource.local.model.LocalDataCountry
 
 @Dao
 interface CountryDao {
+
+    /**
+     * Insert an country in DB
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCountry(localDataCountry: LocalDataCountry)
+
+    /**
+     * Delete an country from DB
+     */
+    @Query("DELETE FROM favorite WHERE code LIKE :countryCode")
+    fun deleteCountry(countryCode: String)
+
+    /**
+     * Get a country in DB by its code
+     */
+    @Query("SELECT * FROM favorite WHERE code LIKE :countryCode")
+    fun getCountryByCode(countryCode: String): LocalDataCountry
 
     /*
     /**

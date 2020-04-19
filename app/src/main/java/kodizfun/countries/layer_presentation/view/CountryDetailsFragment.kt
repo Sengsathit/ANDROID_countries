@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kodizfun.countries.R
 import kodizfun.countries.layer_presentation.di.ViewModelFactory
+import kodizfun.countries.layer_presentation.loadImage
 import kodizfun.countries.layer_presentation.viewmodel.CountriesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_country_details.*
@@ -54,15 +55,8 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        countryNameTextView.text = viewModel.selectedCountry.value?.name
-
         // Sets toolbar
         toolBar = activity!!.toolbar
-    }
-
-    override fun onResume() {
-        super.onResume()
-        toolBar.title = "Country details"
     }
 
     //region Toolbar Menu
@@ -92,12 +86,17 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         // Observes selected country value
         viewModel.selectedCountry.observe(lifeCycleOwner, Observer {
             it?.let { country ->
-                updateFavoriteIcon(country.isFavorite)
+                updateUI(country.isFavorite)
             }
         })
     }
 
-    private fun updateFavoriteIcon(isFavorite: Boolean?) {
+    private fun updateUI(isFavorite: Boolean?) {
+
+        countryFlagImageView.loadImage(viewModel.selectedCountry.value?.flag)
+        countryNameTextView.text = viewModel.selectedCountry.value?.name
+        toolBar.title = viewModel.selectedCountry.value?.name
+
         isFavorite?.let {
             toolBar.menu.findItem(R.id.itemFavorite).icon =
                 if (isFavorite) activity!!.getDrawable(R.drawable.icon_heart)

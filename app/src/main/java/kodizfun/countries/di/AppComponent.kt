@@ -3,15 +3,19 @@ package kodizfun.countries.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import kodizfun.countries.layer_data.di.DataModule
+import kodizfun.countries.layer_data.di.DataSourceModule
+import kodizfun.countries.layer_data.di.DatabaseModule
 import kodizfun.countries.layer_data.di.NetworkModule
+import kodizfun.countries.layer_data.di.RepositoryModule
 import kodizfun.countries.layer_presentation.di.MainComponent
 
 @AppScope
 @Component(
     modules = [
         SubComponentsModule::class,
-        DataModule::class,
+        DatabaseModule::class,
+        RepositoryModule::class,
+        DataSourceModule::class,
         NetworkModule::class
     ]
 )
