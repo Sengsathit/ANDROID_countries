@@ -28,14 +28,9 @@ class CountriesViewModel @Inject constructor(private var getCountriesUseCaseUseC
     val error: LiveData<String>
         get() = _error
 
-    // Encapsulated LiveData favorite status for the seleced country
-    private val _isSelectedCountryFavorite = MutableLiveData<Boolean>()
-    val isSelectedCountryFavorite: LiveData<Boolean>
-        get() = _isSelectedCountryFavorite
-
-    // Encapsulated selected country
-    private lateinit var _selectedCountry: Country
-    val selectedCountry: Country?
+    // Encapsulated LiveData for selected country
+    private val _selectedCountry = MutableLiveData<Country>()
+    val selectedCountry: LiveData<Country>
         get() = _selectedCountry
 
     // Exception handler for coroutines
@@ -59,21 +54,19 @@ class CountriesViewModel @Inject constructor(private var getCountriesUseCaseUseC
     }
 
     fun toggleCountryFavorite() {
-        _isSelectedCountryFavorite.value = !(_isSelectedCountryFavorite.value!!)
+        _selectedCountry.value?.let { country ->
+            country.isFavorite = !country.isFavorite
+            _selectedCountry.postValue(country)
+        }
     }
 
     fun setSelectedCountry(country: Country) {
-        _selectedCountry = country
-    }
-
-    fun initSelectedCountry() {
-        _isSelectedCountryFavorite.value = _selectedCountry.isFavorite
+        _selectedCountry.value = country
     }
 
     override fun onCleared() {
         super.onCleared()
         countriesJob.cancel()
-        _isSelectedCountryFavorite.value = null
     }
 
     companion object {

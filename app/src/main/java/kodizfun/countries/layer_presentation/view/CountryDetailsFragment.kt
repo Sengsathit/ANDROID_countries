@@ -36,8 +36,7 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         // Initiates the ViewModel
         viewModel =
             ViewModelProvider(this, this.viewModelFactory).get(CountriesViewModel::class.java)
-        // Observes all values from the ViewModel
-        observeViewModel(this)
+
     }
 
     override fun onCreateView(
@@ -55,7 +54,7 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        countryNameTextView.text = viewModel.selectedCountry?.name
+        countryNameTextView.text = viewModel.selectedCountry.value?.name
 
         // Sets toolbar
         toolBar = activity!!.toolbar
@@ -72,7 +71,9 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         toolBar.inflateMenu(R.menu.menu_country_details)
         toolBar.setOnMenuItemClickListener(this)
 
-        viewModel.initSelectedCountry()
+        // Observes all values from the ViewModel here
+        // in order to waiting for all inflating process (layout, menu, etc...)
+        observeViewModel(this)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -88,10 +89,10 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
      * Observes LiveData values from the ViewModel
      */
     private fun observeViewModel(lifeCycleOwner: LifecycleOwner) {
-        // Observes isFavorite value
-        viewModel.isSelectedCountryFavorite.observe(lifeCycleOwner, Observer {
-            it?.let { isFavorite ->
-                updateFavoriteIcon(isFavorite)
+        // Observes selected country value
+        viewModel.selectedCountry.observe(lifeCycleOwner, Observer {
+            it?.let { country ->
+                updateFavoriteIcon(country.isFavorite)
             }
         })
     }
