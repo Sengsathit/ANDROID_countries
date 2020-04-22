@@ -3,7 +3,7 @@
 
 ### What is this repository for? ###
 
-Having fun on Android development by usin the following stack :<br/>
+Having fun on Android development by using the following stack :<br/>
 
 * Kotlin<br/>
 * MVVM architecture
