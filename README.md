@@ -7,8 +7,8 @@ Having fun on Android development by using the following stack :<br/>
 
 * Kotlin<br/>
 * MVVM architecture
-* Clean architecture 
-* Dagger2
+* Clean architecture
+* Hilt / Dagger2
 * Coroutines
 * Room
 * Navigation component
