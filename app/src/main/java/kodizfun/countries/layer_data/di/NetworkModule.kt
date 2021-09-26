@@ -4,17 +4,20 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import kodizfun.countries.di.AppScope
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kodizfun.countries.layer_data.datasource.remote.network.CountriesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideRetrofitClient(
         okHttpClient: OkHttpClient,
@@ -27,7 +30,7 @@ class NetworkModule {
             .build()
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
@@ -35,25 +38,25 @@ class NetworkModule {
             .build()
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideHttpLoginInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory {
         return GsonConverterFactory.create(gson)
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideGson(): Gson {
         return GsonBuilder().create()
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideFlagsService(retrofit: Retrofit): CountriesApi =
         retrofit.create(CountriesApi::class.java)

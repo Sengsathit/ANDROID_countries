@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kodizfun.countries.R
-import kodizfun.countries.layer_presentation.di.ViewModelFactory
 import kodizfun.countries.layer_presentation.loadImage
 import kodizfun.countries.layer_presentation.viewmodel.CountriesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,10 +19,8 @@ import javax.inject.Inject
 /**
  * Fragment that displays a country details
  */
+@AndroidEntryPoint
 class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var viewModel: CountriesViewModel
 
@@ -31,12 +29,7 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        // Obtaining the sub component graph from MainActivity and instantiate
-        // the @Inject fields with objects from the graph
-        (activity as MainActivity).mainComponent.inject(this)
-        // Initiates the ViewModel
-        viewModel =
-            ViewModelProvider(this, this.viewModelFactory).get(CountriesViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CountriesViewModel::class.java)
 
     }
 
@@ -56,7 +49,7 @@ class CountryDetailsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         super.onActivityCreated(savedInstanceState)
 
         // Sets toolbar
-        toolBar = activity!!.toolbar
+        //toolBar = activity!!.toolbar
     }
 
     //region Toolbar Menu

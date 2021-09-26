@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kodizfun.countries.layer_domain.entity.Country
 import kodizfun.countries.layer_domain.usecase.*
-import kodizfun.countries.layer_presentation.di.ActivityScope
 import kotlinx.coroutines.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ActivityScope
+@HiltViewModel
 class CountriesViewModel @Inject constructor(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryFromFavoritesUseCase: GetCountryFromFavoritesUseCase,

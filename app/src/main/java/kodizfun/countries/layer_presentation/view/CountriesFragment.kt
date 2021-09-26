@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kodizfun.countries.R
 import kodizfun.countries.layer_domain.entity.Country
-import kodizfun.countries.layer_presentation.di.ViewModelFactory
 import kodizfun.countries.layer_presentation.view.adapter.CountriesAdapter
 import kodizfun.countries.layer_presentation.view.listener.CountrySelectionListener
 import kodizfun.countries.layer_presentation.viewmodel.CountriesViewModel
@@ -22,11 +21,7 @@ import javax.inject.Inject
 
 class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuItemClickListener  {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    @Inject
-    lateinit var countriesAdapter: CountriesAdapter
+    //@Inject lateinit var countriesAdapter: CountriesAdapter
 
     private lateinit var viewModel: CountriesViewModel
 
@@ -35,12 +30,8 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        // Obtaining the sub component graph from MainActivity and instantiate
-        // the @Inject fields with objects from the graph
-        (activity as MainActivity).mainComponent.inject(this)
-        // Initiates the ViewModel
-        viewModel = ViewModelProvider(this, this.viewModelFactory).get(CountriesViewModel::class.java)
-        // Observes all values from the ViewModel
+        viewModel = ViewModelProvider(this).get(CountriesViewModel::class.java)
+
         observeViewModel(this)
     }
 
@@ -60,11 +51,11 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
         super.onActivityCreated(savedInstanceState)
 
         // Sets countries RecyclerView
-        countriesAdapter.setCountrySelectionListener(this)
-        countriesRecyclerView.adapter = countriesAdapter
+        //countriesAdapter.setCountrySelectionListener(this)
+        //countriesRecyclerView.adapter = countriesAdapter
 
         // Sets toolbar
-        toolBar = activity!!.toolbar
+        //toolBar = activity!!.toolbar
     }
 
     override fun onResume() {
@@ -82,7 +73,7 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.itemRefresh -> {
-                countriesAdapter.updateCountries(ArrayList())
+                //countriesAdapter.updateCountries(ArrayList())
                 viewModel.getCountries()
             }
             else -> println("Default")
@@ -99,7 +90,7 @@ class CountriesFragment : Fragment(), CountrySelectionListener, Toolbar.OnMenuIt
         // Observes countries value
         viewModel.countries.observe(lifeCycleOwner, Observer {
             it?.let { countries ->
-                countriesAdapter.updateCountries(countries)
+                //countriesAdapter.updateCountries(countries)
             }
         })
 
