@@ -6,7 +6,5 @@ import javax.inject.Singleton
 
 @Singleton
 class GetCountriesUseCase @Inject constructor(private val countryRepository: CountryRepository) {
-
     suspend operator fun invoke() = countryRepository.getAllCountries()
-
 }

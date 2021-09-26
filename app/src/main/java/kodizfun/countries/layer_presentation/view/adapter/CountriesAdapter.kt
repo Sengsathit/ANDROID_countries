@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kodizfun.countries.R
+import kodizfun.countries.databinding.ItemCountryBinding
 import kodizfun.countries.layer_domain.entity.Country
 import kodizfun.countries.layer_presentation.loadImage
 import kodizfun.countries.layer_presentation.view.listener.CountrySelectionListener
-import kotlinx.android.synthetic.main.item_country.view.*
 import javax.inject.Inject
 
 /**
@@ -21,9 +20,8 @@ class CountriesAdapter @Inject constructor() : RecyclerView.Adapter<CountryViewH
     private var countries = ArrayList<Country>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
-        val inflatedView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false)
-        return CountryViewHolder(inflatedView, countrySelectionListener)
+        val binding = ItemCountryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CountryViewHolder(binding, countrySelectionListener)
     }
 
     override fun getItemCount(): Int {
@@ -49,15 +47,16 @@ class CountriesAdapter @Inject constructor() : RecyclerView.Adapter<CountryViewH
 /**
  * View holder for country
  */
-class CountryViewHolder(v: View, listener: CountrySelectionListener) : RecyclerView.ViewHolder(v),
+class CountryViewHolder(binding: ItemCountryBinding, listener: CountrySelectionListener) :
+    RecyclerView.ViewHolder(binding.root),
     View.OnClickListener {
 
-    private var view = v
+    private var binding = binding
     private var country: Country? = null
     private val countrySelectionListener = listener
 
     init {
-        v.setOnClickListener(this)
+        binding.root.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -69,8 +68,8 @@ class CountryViewHolder(v: View, listener: CountrySelectionListener) : RecyclerV
 
     fun bindCountry(country: Country) {
         this.country = country
-        view.countryFlagImageView.loadImage(this.country?.flag)
-        view.countryNameTextView.text = this.country?.name
+        binding.countryFlagImageView.loadImage(this.country?.flag)
+        binding.countryNameTextView.text = this.country?.name
     }
 
     companion object {

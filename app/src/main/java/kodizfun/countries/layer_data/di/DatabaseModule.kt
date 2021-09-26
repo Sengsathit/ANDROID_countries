@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kodizfun.countries.layer_data.datasource.local.database.CountryDatabase
 import kodizfun.countries.layer_data.datasource.local.database.dao.CountryDao
@@ -15,7 +16,7 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideCountryDatabase(context: Context): CountryDatabase {
+    fun provideCountryDatabase(@ApplicationContext context: Context): CountryDatabase {
         return CountryDatabase.getInstance(context)
     }
 

@@ -30,6 +30,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     dynamicFeatures = []
 }
 
@@ -53,6 +57,7 @@ dependencies {
     implementation "androidx.room:room-runtime:${versions.room}"
     implementation "androidx.room:room-ktx:${versions.room}"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.4.0'
     kapt "androidx.room:room-compiler:${versions.room}"
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"

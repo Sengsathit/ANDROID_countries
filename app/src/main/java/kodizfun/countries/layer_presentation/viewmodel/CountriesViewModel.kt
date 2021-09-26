@@ -1,23 +1,21 @@
 package kodizfun.countries.layer_presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kodizfun.countries.layer_domain.entity.Country
 import kodizfun.countries.layer_domain.usecase.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class CountriesViewModel @Inject constructor(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryFromFavoritesUseCase: GetCountryFromFavoritesUseCase,
-    private val addCountryToFavoritesUseCase: AddCountryToFavoritesUseCase,
+    private val isCountryFavoriteUseCase: IsCountryFavoriteUseCase,
     private val removeCountryFromFavoritesUseCase: RemoveCountryFromFavoritesUseCase,
-    private val isCountryFavoriteUseCase: IsCountryFavoriteUseCase
+    private val addCountryToFavoritesUseCase: AddCountryToFavoritesUseCase
 ) : ViewModel() {
 
     //region PROPERTIES REGION
@@ -55,6 +53,7 @@ class CountriesViewModel @Inject constructor(
     //endregion
 
     fun getCountries() {
+
         countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
             withContext(Dispatchers.Main) {
                 _loading.value = true
@@ -62,6 +61,7 @@ class CountriesViewModel @Inject constructor(
                 _loading.value = false
             }
         }
+
     }
 
     /**
@@ -77,7 +77,7 @@ class CountriesViewModel @Inject constructor(
                 countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
                     // Check if country is in favorites
                     val isFavorite = isCountryFavoriteUseCase(countryCode)
-                    if(isFavorite) {
+                    if (isFavorite) {
                         // Remove country from favorites
                         removeCountryFromFavoritesUseCase(countryCode)
                         country.isFavorite = false
@@ -90,6 +90,7 @@ class CountriesViewModel @Inject constructor(
                 }
             }
         }
+
     }
 
     /**
@@ -99,16 +100,17 @@ class CountriesViewModel @Inject constructor(
      * - if not use the object from de countries list
      */
     fun setSelectedCountry(country: Country) {
-        country?.code?.let {countryCode ->
+        country?.code?.let { countryCode ->
             countriesJob = coroutineScope.launch(coroutineExceptionHandler) {
                 val selectedCountryFromUseCase = getCountryFromFavoritesUseCase(countryCode)
                 withContext(Dispatchers.Main) {
                     _selectedCountry.value = selectedCountryFromUseCase?.let {
                         it
-                    }  ?: country
+                    } ?: country
                 }
             }
         }
+
     }
 
     override fun onCleared() {
@@ -116,7 +118,5 @@ class CountriesViewModel @Inject constructor(
         countriesJob.cancel()
     }
 
-    companion object {
-        private val TAG = CountriesViewModel::class.java.name
-    }
+
 }

@@ -2,33 +2,20 @@ package kodizfun.countries.layer_presentation.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kodizfun.countries.App
-import kodizfun.countries.R
-import kodizfun.countries.layer_presentation.viewmodel.CountriesViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
+import kodizfun.countries.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: CountriesViewModel
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-        setSupportActionBar(toolbar)
+        setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(CountriesViewModel::class.java)
-
+        setSupportActionBar(binding.toolbar)
     }
-
-
-    companion object {
-        private val TAG = MainActivity::class.java.simpleName
-    }
-
 }

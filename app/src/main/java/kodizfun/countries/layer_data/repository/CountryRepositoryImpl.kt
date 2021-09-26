@@ -6,7 +6,6 @@ import kodizfun.countries.layer_data.mapper.mapToDomain
 import kodizfun.countries.layer_data.mapper.mapToLocalData
 import kodizfun.countries.layer_domain.abstraction.CountryRepository
 import kodizfun.countries.layer_domain.entity.Country
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
